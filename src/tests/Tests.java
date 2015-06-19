@@ -1,6 +1,5 @@
 package tests;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -30,11 +29,31 @@ public class Tests {
 			cg = CGUtils.buildCG(SamplePaths.SAMPLE_ONE);
 			graph = new StringGraph(cg);
 			
-			ArrayList<String> edges1 = graph.nodes.get("samples.SampleFour.even(I)Z");
-			ArrayList<String> edges2 = graph.nodes.get("samples.SampleFour.odd(I)Z");			
+			ArrayList<String> edges1 = graph.nodes.get("samples.SampleOne.even(I)Z");
+			ArrayList<String> edges2 = graph.nodes.get("samples.SampleOne.odd(I)Z");			
 			
-			assertTrue(edges1.contains("samples.SampleFour.odd(I)Z") && edges2.contains("samples.SampleFour.even(I)Z"));
+			assertTrue(edges1.contains("samples.SampleOne.odd(I)Z") && edges2.contains("samples.SampleOne.even(I)Z"));
 
+		} catch (Exception e) { fail(e.getMessage()); }
+	}
+	
+	/**
+	 * Test to see if a class has been instantiated but none of its methods were used.
+	 */
+	@Test
+	public void classNotUsedTest() {
+		try {
+			CallGraph cg;
+			StringGraph graph;			
+			cg = CGUtils.buildCG(SamplePaths.SAMPLE_ONE);
+			graph = new StringGraph(cg);
+			
+			ArrayList<String> edges = graph.nodes.get("samples.SampleOne.main([Ljava/lang/String;)V");
+			
+			assertTrue(edges.contains("samples.B.<init>()V") && !edges.contains("samples.B.foo()I"));
+			
+			assertTrue(true);
+			
 		} catch (Exception e) { fail(e.getMessage()); }
 	}
 }
